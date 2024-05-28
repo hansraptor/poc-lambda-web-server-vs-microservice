@@ -5,7 +5,7 @@ export const handler = async (event) => {
     
     const response = {
       statusCode: 200,
-      body: JSON.stringify(`Hello from Terraform Lambda Get Users Microservice!`),
+      body: JSON.stringify(`Hello from Terraform Lambda Deactivate User Microservice!`),
     };
     
     return response;

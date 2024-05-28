@@ -8,7 +8,7 @@ webserver.get("/test", (request, response) => {
   console.log(`${request.method} ${request.url}`);
 
   response.status(200).json({
-    message: `Hello from Terraformed Lambda!`,
+    message: `Hello from Terraformed Lambda Monolith!`,
   })
 });
 

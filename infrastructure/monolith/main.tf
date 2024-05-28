@@ -11,24 +11,9 @@ terraform {
 locals {
   api_name                                    = "api-monolith"
   lambda_arn                                  = "arn:aws:lambda:af-south-1:767398121047:function:test-api-gateway-invoke"
-  lambda_name                                 = "test-api-gateway-invoke"
+  lambda_name                                 = "monolith-web-server"
   allow_write_log_group_stream_event_role_arn = "arn:aws:iam::767398121047:role/allow-write-log-group-stream-event-role"
   function_source_location                    = "../../code/monolith"
-}
-
-resource "aws_api_gateway_rest_api" "monolith_api" {
-  name = local.api_name
-}
-
-resource "aws_api_gateway_method" "root_post_method" {
-  rest_api_id   = aws_api_gateway_rest_api.monolith_api.id
-  resource_id   = aws_api_gateway_rest_api.monolith_api.root_resource_id
-  authorization = "NONE"
-  http_method   = "POST"
-
-  depends_on = [
-    aws_api_gateway_rest_api.monolith_api
-  ]
 }
 
 data "archive_file" "function_zip" {
@@ -36,7 +21,8 @@ data "archive_file" "function_zip" {
   source_dir = local.function_source_location
   excludes = [
     ".gitignore",
-    "function.zip"
+    "monolith.zip",
+    "package.json"
   ]
   output_file_mode = "0666"
   output_path      = "${local.function_source_location}/monolith.zip"
@@ -55,6 +41,21 @@ resource "aws_lambda_function" "webserver_lambda" {
   ]
 }
 
+resource "aws_api_gateway_rest_api" "monolith_api" {
+  name = local.api_name
+}
+
+resource "aws_api_gateway_method" "root_post_method" {
+  rest_api_id   = aws_api_gateway_rest_api.monolith_api.id
+  resource_id   = aws_api_gateway_rest_api.monolith_api.root_resource_id
+  authorization = "NONE"
+  http_method   = "POST"
+
+  depends_on = [
+    aws_api_gateway_rest_api.monolith_api
+  ]
+}
+
 resource "aws_api_gateway_integration" "root_post_lambda_integration" {
   rest_api_id             = aws_api_gateway_rest_api.monolith_api.id
   resource_id             = aws_api_gateway_rest_api.monolith_api.root_resource_id
@@ -66,7 +67,7 @@ resource "aws_api_gateway_integration" "root_post_lambda_integration" {
   depends_on = [
     aws_api_gateway_rest_api.monolith_api,
     aws_api_gateway_method.root_post_method,
-    data.aws_lambda_function.webserver_lambda
+    aws_lambda_function.webserver_lambda
   ]
 }
 
@@ -80,5 +81,29 @@ resource "aws_lambda_permission" "apigw_lambda" {
   depends_on = [
     aws_api_gateway_rest_api.monolith_api,
     aws_api_gateway_method.root_post_method
+  ]
+}
+
+resource "aws_api_gateway_deployment" "default_deployment" {
+  rest_api_id = aws_api_gateway_rest_api.monolith_api.id
+
+  # stage_name = "" # Not recommended by Terraform docs
+
+  depends_on = [
+    aws_lambda_function.webserver_lambda,
+    aws_api_gateway_rest_api.monolith_api,
+    aws_api_gateway_method.root_post_method,
+    aws_api_gateway_integration.root_post_lambda_integration,
+    aws_lambda_permission.apigw_lambda
+  ]
+}
+
+resource "aws_api_gateway_stage" "default_stage" {
+  stage_name = "default"
+  rest_api_id = aws_api_gateway_rest_api.monolith_api.id
+  deployment_id = aws_api_gateway_deployment.default_deployment.id
+
+  depends_on = [
+    aws_api_gateway_deployment.default_deployment
   ]
 }

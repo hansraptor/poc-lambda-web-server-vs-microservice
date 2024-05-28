@@ -56,17 +56,6 @@ resource "aws_api_gateway_resource" "greedy_proxy_resource" {
   ]
 }
 
-# resource "aws_api_gateway_method" "root_post_method" {
-#   rest_api_id   = aws_api_gateway_rest_api.monolith_api.id
-#   resource_id   = aws_api_gateway_rest_api.monolith_api.root_resource_id
-#   authorization = "NONE"
-#   http_method   = "POST"
-
-#   depends_on = [
-#     aws_api_gateway_rest_api.monolith_api
-#   ]
-# }
-
 resource "aws_api_gateway_method" "proxy_any_method" {
   rest_api_id = aws_api_gateway_rest_api.monolith_api.id
   resource_id = aws_api_gateway_resource.greedy_proxy_resource.id

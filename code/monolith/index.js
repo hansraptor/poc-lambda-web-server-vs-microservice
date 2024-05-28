@@ -13,7 +13,7 @@ webserver.get("/test", (request, response) => {
 });
 
 webserver.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+  console.log(`Server is running on port [${port}]`);
 });
 
 module.exports.handler = serverless(webserver);

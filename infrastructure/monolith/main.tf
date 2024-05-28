@@ -10,7 +10,6 @@ terraform {
 
 locals {
   api_name                                    = "api-monolith"
-  lambda_arn                                  = "arn:aws:lambda:af-south-1:767398121047:function:test-api-gateway-invoke"
   lambda_name                                 = "monolith-web-server"
   allow_write_log_group_stream_event_role_arn = "arn:aws:iam::767398121047:role/allow-write-log-group-stream-event-role"
   function_source_location                    = "../../code/monolith"
@@ -99,7 +98,7 @@ resource "aws_api_gateway_integration" "proxy_any_lambda_integration" {
 resource "aws_lambda_permission" "apigw_lambda" {
   statement_id  = "AllowAPIGatewayLambdaProxyIntegration"
   action        = "lambda:InvokeFunction"
-  function_name = local.lambda_name
+  function_name = aws_lambda_function.webserver_lambda.function_name
   principal     = "apigateway.amazonaws.com"
   source_arn    = "${aws_api_gateway_rest_api.monolith_api.execution_arn}/*/*/*"
 

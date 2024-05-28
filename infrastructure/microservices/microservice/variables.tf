@@ -29,8 +29,8 @@ variable "resource_id" {
   type = string
 }
 
-variable "resource_name" {
-  description = "The name of the API resource where the method will be defined"
+variable "route_path" {
+  description = "The path of the API resource where the method will be defined"
   type = string
 }
 

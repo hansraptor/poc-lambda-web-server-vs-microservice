@@ -58,7 +58,7 @@ resource "aws_lambda_permission" "apigw_lambda" {
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.microservice_lambda.function_name
   principal     = "apigateway.amazonaws.com"
-  source_arn    = "${var.api_execution_arn}/*/${var.http_method}/${var.resource_name}"
+  source_arn    = "${var.api_execution_arn}/*/${var.http_method}${var.route_path}"
 
   depends_on = [
     aws_api_gateway_method.resource_method

@@ -1,0 +1,11 @@
+{
+  "name": "monolith",
+  "version": "1.0.0",
+  "description": "The monolithic web server implementation",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Hannes Swanepoel",
+  "license": "ISC"
+}

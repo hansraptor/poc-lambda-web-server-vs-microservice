@@ -2,7 +2,7 @@
 terraform {
   backend "s3" {
     bucket         = "hansraptor-terraform-state-bucket"
-    key            = "poc-lambda-web-server-vs-microservice/monolith.tfstate"
+    key            = "poc-lambda-web-server-vs-microservice/microservices.tfstate"
     region         = "af-south-1"
     dynamodb_table = "hansraptor-terraform-lock-table"
   }
@@ -50,7 +50,6 @@ resource "aws_api_gateway_deployment" "default_deployment" {
   # stage_name = "" # Not recommended by Terraform docs
 
   depends_on = [
-    aws_lambda_function.webserver_lambda,
     module.emli_lms_getusers,
     aws_api_gateway_rest_api.microservice_api
   ]

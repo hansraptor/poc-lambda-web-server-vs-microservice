@@ -8,12 +8,12 @@ data "archive_file" "function_zip" {
   source_dir = var.function_source_location
   excludes = [
     ".gitignore",
-    "${package_name}.zip",
+    "${local.package_name}.zip",
     "package.json",
     "package-lock.json"
   ]
   output_file_mode = "0666"
-  output_path      = "${var.function_source_location}/${package_name}.zip"
+  output_path      = "${var.function_source_location}/${local.package_name}.zip"
 }
 
 resource "aws_lambda_function" "microservice_lambda" {
@@ -36,8 +36,6 @@ resource "aws_api_gateway_method" "resource_method" {
   http_method = var.http_method
 
   depends_on = [
-    aws_api_gateway_rest_api.monolith_api,
-    aws_api_gateway_resource.greedy_proxy_resource
   ]
 }
 

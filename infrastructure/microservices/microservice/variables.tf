@@ -29,6 +29,11 @@ variable "resource_id" {
   type = string
 }
 
+variable "resource_name" {
+  description = "The name of the API resource where the method will be defined"
+  type = string
+}
+
 variable "http_method" {
   description = "The HTTP method that will integration with the Lambda function"
   type = string

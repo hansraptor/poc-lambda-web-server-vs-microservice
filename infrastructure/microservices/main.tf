@@ -41,6 +41,7 @@ module "emli_lms_getusers" {
     api_id = aws_api_gateway_rest_api.microservice_api.id
     api_execution_arn = aws_api_gateway_rest_api.microservice_api.execution_arn
     resource_id = aws_api_gateway_resource.user_service_resource.id
+    resource_name = aws_api_gateway_resource.user_service_resource.path_part
     http_method = "GET"
 }
 

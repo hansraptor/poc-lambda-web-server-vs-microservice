@@ -19,7 +19,7 @@ data "archive_file" "function_zip" {
 resource "aws_lambda_function" "microservice_lambda" {
   function_name    = var.lambda_name
   role             = var.execution_role
-  runtime          = "nodejs18.x"
+  runtime          = "nodejs20.x"
   handler          = "index.handler"
   filename         = data.archive_file.function_zip.output_path
   source_code_hash = data.archive_file.function_zip.output_base64sha256
@@ -58,7 +58,7 @@ resource "aws_lambda_permission" "apigw_lambda" {
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.microservice_lambda.function_name
   principal     = "apigateway.amazonaws.com"
-  source_arn    = "${var.api_execution_arn}/*/${var.http_method}/"
+  source_arn    = "${var.api_execution_arn}/*/${var.http_method}/${var.resource_name}"
 
   depends_on = [
     aws_api_gateway_method.resource_method

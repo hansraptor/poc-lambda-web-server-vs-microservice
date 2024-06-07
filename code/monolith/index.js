@@ -16,8 +16,6 @@ webserver.use(express.json())
 // });
 
 webserver.use("*", (request, response) => {
-  console.log(`${request.method} ${request.url}`);
-
   response.status(200).json({
     method: request.method,
     baseUrl: request.baseUrl,

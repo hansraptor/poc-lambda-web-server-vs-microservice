@@ -46,7 +46,7 @@ module "emli_lms_createuser" {
   source = "./microservice"
 
   lambda_name              = "user-service-create-user"
-  function_source_location = "../../code/microservices/create-user"
+  function_source_location = "${local.function_source_base_path}/create-user"
   execution_role           = local.allow_write_log_group_stream_event_role_arn
   api_id                   = aws_api_gateway_rest_api.microservice_api.id
   api_execution_arn        = aws_api_gateway_rest_api.microservice_api.execution_arn
@@ -63,7 +63,7 @@ module "emli_lms_listusers" {
   source = "./microservice"
 
   lambda_name              = "user-service-list-users"
-  function_source_location = "../../code/microservices/list-users"
+  function_source_location = "${local.function_source_base_path}/list-users"
   execution_role           = local.allow_write_log_group_stream_event_role_arn
   api_id                   = aws_api_gateway_rest_api.microservice_api.id
   api_execution_arn        = aws_api_gateway_rest_api.microservice_api.execution_arn
@@ -80,7 +80,7 @@ module "emli_lms_fetchuser" {
   source = "./microservice"
 
   lambda_name              = "user-service-fetch-user"
-  function_source_location = "../../code/microservices/fetch-user"
+  function_source_location = "${local.function_source_base_path}/fetch-user"
   execution_role           = local.allow_write_log_group_stream_event_role_arn
   api_id                   = aws_api_gateway_rest_api.microservice_api.id
   api_execution_arn        = aws_api_gateway_rest_api.microservice_api.execution_arn
@@ -97,7 +97,7 @@ module "emli_lms_updateuser" {
   source = "./microservice"
 
   lambda_name              = "user-service-update-user"
-  function_source_location = "../../code/microservices/update-user"
+  function_source_location = "${local.function_source_base_path}/update-user"
   execution_role           = local.allow_write_log_group_stream_event_role_arn
   api_id                   = aws_api_gateway_rest_api.microservice_api.id
   api_execution_arn        = aws_api_gateway_rest_api.microservice_api.execution_arn
@@ -114,7 +114,7 @@ module "emli_lms_deactivateuser" {
   source = "./microservice"
 
   lambda_name              = "user-service-deactivate-user"
-  function_source_location = "../../code/microservices/deactivate-user"
+  function_source_location = "${local.function_source_base_path}/deactivate-user"
   execution_role           = local.allow_write_log_group_stream_event_role_arn
   api_id                   = aws_api_gateway_rest_api.microservice_api.id
   api_execution_arn        = aws_api_gateway_rest_api.microservice_api.execution_arn

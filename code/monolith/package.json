@@ -4,12 +4,15 @@
   "description": "The monolithic web server implementation",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "author": "Hannes Swanepoel",
   "license": "ISC",
   "dependencies": {
     "express": "^4.19.2",
     "serverless-http": "^3.2.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
   }
 }

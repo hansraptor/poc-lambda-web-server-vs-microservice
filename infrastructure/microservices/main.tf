@@ -42,6 +42,23 @@ resource "aws_api_gateway_resource" "users_byid_resource" {
 }
 
 // TODO: Declare microservice modules here!
+module "emli_lms_createuser" {
+  source = "./microservice"
+
+  lambda_name              = "user-service-create-user"
+  function_source_location = "../../code/microservices/create-user"
+  execution_role           = local.allow_write_log_group_stream_event_role_arn
+  api_id                   = aws_api_gateway_rest_api.microservice_api.id
+  api_execution_arn        = aws_api_gateway_rest_api.microservice_api.execution_arn
+  resource_id              = aws_api_gateway_resource.users_resource.id
+  route_path               = aws_api_gateway_resource.users_resource.path
+  http_method              = "POST"
+
+  depends_on = [
+    aws_api_gateway_resource.users_resource
+  ]
+}
+
 module "emli_lms_listusers" {
   source = "./microservice"
 
@@ -51,7 +68,7 @@ module "emli_lms_listusers" {
   api_id                   = aws_api_gateway_rest_api.microservice_api.id
   api_execution_arn        = aws_api_gateway_rest_api.microservice_api.execution_arn
   resource_id              = aws_api_gateway_resource.users_resource.id
-  route_path            = aws_api_gateway_resource.users_resource.path
+  route_path               = aws_api_gateway_resource.users_resource.path
   http_method              = "GET"
 
   depends_on = [
@@ -68,25 +85,8 @@ module "emli_lms_fetchuser" {
   api_id                   = aws_api_gateway_rest_api.microservice_api.id
   api_execution_arn        = aws_api_gateway_rest_api.microservice_api.execution_arn
   resource_id              = aws_api_gateway_resource.users_byid_resource.id
-  route_path            = aws_api_gateway_resource.users_byid_resource.path
+  route_path               = aws_api_gateway_resource.users_byid_resource.path
   http_method              = "GET"
-
-  depends_on = [
-    aws_api_gateway_resource.users_byid_resource
-  ]
-}
-
-module "emli_lms_createuser" {
-  source = "./microservice"
-
-  lambda_name              = "user-service-create-user"
-  function_source_location = "../../code/microservices/create-user"
-  execution_role           = local.allow_write_log_group_stream_event_role_arn
-  api_id                   = aws_api_gateway_rest_api.microservice_api.id
-  api_execution_arn        = aws_api_gateway_rest_api.microservice_api.execution_arn
-  resource_id              = aws_api_gateway_resource.users_byid_resource.id
-  route_path            = aws_api_gateway_resource.users_byid_resource.path
-  http_method              = "POST"
 
   depends_on = [
     aws_api_gateway_resource.users_byid_resource
@@ -102,7 +102,7 @@ module "emli_lms_updateuser" {
   api_id                   = aws_api_gateway_rest_api.microservice_api.id
   api_execution_arn        = aws_api_gateway_rest_api.microservice_api.execution_arn
   resource_id              = aws_api_gateway_resource.users_byid_resource.id
-  route_path            = aws_api_gateway_resource.users_byid_resource.path
+  route_path               = aws_api_gateway_resource.users_byid_resource.path
   http_method              = "PUT"
 
   depends_on = [
@@ -119,7 +119,7 @@ module "emli_lms_deactivateuser" {
   api_id                   = aws_api_gateway_rest_api.microservice_api.id
   api_execution_arn        = aws_api_gateway_rest_api.microservice_api.execution_arn
   resource_id              = aws_api_gateway_resource.users_byid_resource.id
-  route_path            = aws_api_gateway_resource.users_byid_resource.path
+  route_path               = aws_api_gateway_resource.users_byid_resource.path
   http_method              = "DELETE"
 
   depends_on = [

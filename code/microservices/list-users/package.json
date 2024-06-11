@@ -1,0 +1,20 @@
+{
+  "name": "list-users",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "jest --passWithNoTests",
+    "build": "rm -rf dist && npx esbuild ./src/* --bundle --minify --platform=node --target=node20.12 --outdir=dist",
+    "build-win": "rmdir /s /q dist 2>NUL & npx esbuild ./src/* --bundle --minify --platform=node --target=node20.12 --outdir=dist"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "esbuild": "^0.21.5",
+    "jest": "^29.7.0"
+  },
+  "dependencies": {
+    "uuid4": "^2.0.3"
+  }
+}

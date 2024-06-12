@@ -2,9 +2,9 @@
 const dataInterface = require("./data-interfact");
 const businessLogic = require("./business-logic");
 
-export const handler = async (event, context) => {
-  const users = dataInterface.fetchUsers();
-  const annotatedUsers = businessLogic.annotateUsers(users);
+/*export const */module.exports.handler = async (event, context) => {
+  const users = await dataInterface.fetchUsers();
+  const annotatedUsers = await businessLogic.annotateUsers(users);
 
   return {
     statusCode: 200,

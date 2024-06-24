@@ -10,7 +10,19 @@ const config = {
 
   // The glob patterns Jest uses to detect test files
   testMatch: [
-    "**/jest-tests/**/*.test(s)?.js"
+    "**/jest-tests/**/*.test(s)?.(m)?js"
+  ],
+
+  // An array of file extensions your modules use
+  moduleFileExtensions: [
+    "js",
+    "mjs",
+    // "cjs",
+    // "jsx",
+    // "ts",
+    // "tsx",
+    // "json",
+    // "node"
   ],
 
   // All imported modules in your tests should be mocked automatically

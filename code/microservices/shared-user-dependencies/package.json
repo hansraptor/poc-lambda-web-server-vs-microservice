@@ -1,0 +1,19 @@
+{
+  "name": "shared-user-dependencies",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "test": "jest",
+    "build": "rm -rf nodejs/node_modules && npx esbuild business-logic.js data-interface.js --bundle --minify --platform=node --target=node20.12 --outdir=nodejs/node_modules"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dayjs": "^1.11.11",
+    "uuid4": "^2.0.3"
+  },
+  "devDependencies": {
+    "esbuild": "^0.21.5",
+    "jest": "^29.7.0"
+  }
+}

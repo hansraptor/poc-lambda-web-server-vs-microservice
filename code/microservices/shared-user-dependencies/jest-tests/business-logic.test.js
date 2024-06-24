@@ -1,5 +1,7 @@
 
-const businessLogic = require("../src/business-logic");
+console.log(`resolve modules from [${process.env.NODE_PATH}]`);
+
+const businessLogic = require("../business-logic");
 
 describe(`annotateUsers`, () => {
     const unannotatedUsers = [{ index: 0 }, { index: 1 }]
@@ -9,7 +11,7 @@ describe(`annotateUsers`, () => {
         
         for (annotatedUser of annotatedUsers) {
             expect(annotatedUser).toEqual(expect.objectContaining({
-                readstamp: expect.any(Number)
+                readstamp: expect.any(String)
             }));
         }
     });

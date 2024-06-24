@@ -3,19 +3,21 @@
   "version": "1.0.0",
   "description": "",
   "type": "commonjs",
-  "main": "src/index.js",
+  "main": "index.js",
   "scripts": {
-    "test": "jest --passWithNoTests",
-    "build": "rm -rf dist && npx esbuild ./src/* --bundle --minify --platform=node --target=node20.12 --outdir=dist",
-    "build-win": "rmdir /s /q dist 2>NUL & npx esbuild ./src/* --bundle --minify --platform=node --target=node20.12 --outdir=dist"
+    "test": "cross-env NODE_PATH=../shared-user-dependencies/nodejs/node_modules jest --passWithNoTests",
+    "build": "rm -rf dist && cross-env NODE_PATH=../shared-user-dependencies/nodejs/node_modules npx esbuild index.js --bundle --external:data-interface --external:business-logic --minify --platform=node --target=node20.12 --outdir=dist",
+    "build-win": "rmdir /s /q dist 2>NUL & npx esbuild ./index.js --bundle --minify --platform=node --target=node20.12 --outdir=dist"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "esbuild": "^0.21.5",
     "jest": "^29.7.0"
   },
   "dependencies": {
+    "dayjs": "^1.11.11",
     "uuid4": "^2.0.3"
   }
 }

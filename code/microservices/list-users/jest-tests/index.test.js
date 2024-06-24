@@ -1,8 +1,8 @@
 
-const index = require("../src/index");
+const index = require("../index.js");
 // import { handler } from "../src/index.js";
 
-describe(`annotateUsers`, () => {
+describe(`list-users index.handler`, () => {
     const event = {
         description: "local unit test"
     };
@@ -10,7 +10,7 @@ describe(`annotateUsers`, () => {
         description: "local unit test"
     };
 
-    it(`all items should have the [readstamp] field`, async () => {
+    it(`all items should have the [id] and [readstamp] fields`, async () => {
         const handlerResult = await index.handler(event, context);;
         
         expect(handlerResult).toEqual(expect.objectContaining({
@@ -18,14 +18,15 @@ describe(`annotateUsers`, () => {
             body: expect.any(String)
         }));
         
-        const responseBody = JSON.parse(handlerResult.body);
+        const users = JSON.parse(handlerResult.body);
 
-        expect(responseBody).toEqual(expect.objectContaining({
-            input: expect.objectContaining({
-                event: expect.objectContaining(event),
-                context: expect.objectContaining(context)
-            }),
-            output: expect.anything()
-        }));
+        expect(users.length).toBeGreaterThan(0);
+        
+        for (user of users) {
+            expect(user).toEqual(expect.objectContaining({
+                id: expect.any(String),
+                readstamp: expect.any(String)
+            }));
+        }
     });
 });

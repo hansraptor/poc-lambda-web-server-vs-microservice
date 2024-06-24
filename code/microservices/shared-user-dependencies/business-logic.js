@@ -1,4 +1,6 @@
 
+const dayjs = require("dayjs");
+
 async function annotateUsers(users) {
     if (!users) {
         users = [];
@@ -11,7 +13,7 @@ async function annotateUsers(users) {
 };
 
 async function annotateUser(user) {
-    user.readstamp = (new Date()).getTime();
+    user.readstamp = dayjs().format();
 
     return Promise.resolve(user);
 }

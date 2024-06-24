@@ -76,6 +76,10 @@ resource "aws_lambda_layer_version" "users_dependencies_layer" {
   compatible_runtimes = ["nodejs20.x"]
   filename            = data.archive_file.layer_zip.output_path
   source_code_hash    = data.archive_file.layer_zip.output_base64sha256
+
+  depends_on = [
+    data.archive_file.layer_zip
+  ]
 }
 
 // TODO: Declare microservice modules here!
@@ -110,6 +114,7 @@ module "emli_lms_listusers" {
   http_method              = "GET"
 
   depends_on = [
+    aws_lambda_layer_version.users_dependencies_layer,
     aws_api_gateway_resource.users_resource
   ]
 }
@@ -128,6 +133,7 @@ module "emli_lms_fetchuser" {
   http_method              = "GET"
 
   depends_on = [
+    aws_lambda_layer_version.users_dependencies_layer,
     aws_api_gateway_resource.users_byid_resource
   ]
 }

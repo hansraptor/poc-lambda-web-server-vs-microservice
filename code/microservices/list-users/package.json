@@ -5,8 +5,8 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "test": "cross-env NODE_PATH=../shared-user-dependencies/nodejs/node_modules jest --passWithNoTests",
-    "build": "rm -rf dist && cross-env NODE_PATH=../shared-user-dependencies/nodejs/node_modules npx esbuild index.js --bundle --external:data-interface --external:business-logic --minify --platform=node --target=node20.12 --outdir=dist",
+    "test": "cross-env NODE_PATH=../shared-user-dependencies/dist/nodejs/node_modules jest --passWithNoTests",
+    "build": "rm -rf dist && cross-env NODE_PATH=../shared-user-dependencies/dist/nodejs/node_modules npx esbuild index.js --bundle --external:data-interface --external:business-logic --minify --platform=node --target=node20.12 --outdir=dist",
     "build-win": "rmdir /s /q dist 2>NUL & npx esbuild ./index.js --bundle --minify --platform=node --target=node20.12 --outdir=dist"
   },
   "author": "",

@@ -4,25 +4,25 @@ locals {
 }
 
 data "external" "lambda_build" {
-	working_dir = var.function_source_location
-	program = [ "bash", "-c", <<BUILD
+  working_dir = var.function_source_location
+  program = ["bash", "-c", <<BUILD
 (npm ci && npm test && npm run build) >&2 && echo "{\"output-folder\":\"dist\"}"
 BUILD
-    ]
-	# query = {
-	# 	...
-	# }
+  ]
+  # query = {
+  # 	...
+  # }
 }
 
 data "archive_file" "function_zip" {
   type       = "zip"
   source_dir = "${var.function_source_location}/dist"
-#   excludes = [
-#     ".gitignore",
-#     "${local.package_name}.zip",
-#     "package.json",
-#     "package-lock.json"
-#   ]
+  #   excludes = [
+  #     ".gitignore",
+  #     "${local.package_name}.zip",
+  #     "package.json",
+  #     "package-lock.json"
+  #   ]
   output_file_mode = "0666"
   output_path      = "${var.function_source_location}/${local.package_name}.zip"
 
@@ -33,6 +33,7 @@ data "archive_file" "function_zip" {
 
 resource "aws_lambda_function" "microservice_lambda" {
   function_name    = var.lambda_name
+  layers           = var.layer_arn
   role             = var.execution_role
   runtime          = "nodejs20.x"
   handler          = "index.handler"
@@ -45,10 +46,10 @@ resource "aws_lambda_function" "microservice_lambda" {
 }
 
 resource "aws_api_gateway_method" "resource_method" {
-  rest_api_id = var.api_id
-  resource_id = var.resource_id
+  rest_api_id   = var.api_id
+  resource_id   = var.resource_id
   authorization = "NONE"
-  http_method = var.http_method
+  http_method   = var.http_method
 
   depends_on = [
   ]

@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "test": "jest",
-    "build": "rm -rf nodejs/node_modules && npx esbuild business-logic.js data-interface.js --bundle --minify --platform=node --target=node20.12 --outdir=nodejs/node_modules"
+    "build": "rm -rf dist/nodejs/node_modules && npx esbuild business-logic.js data-interface.js --bundle --minify --platform=node --target=node20.12 --outdir=dist/nodejs/node_modules"
   },
   "author": "",
   "license": "ISC",

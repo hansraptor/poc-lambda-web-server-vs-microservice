@@ -41,6 +41,43 @@ resource "aws_api_gateway_resource" "users_byid_resource" {
   ]
 }
 
+data "external" "layer_build" {
+  working_dir = "${local.function_source_base_path}/shared-user-dependencies"
+  program = ["bash", "-c", <<BUILD
+(npm ci && npm test && npm run build) >&2 && echo "{\"output-folder\":\"dist\"}"
+BUILD
+  ]
+  # query = {
+  # 	...
+  # }
+}
+
+data "archive_file" "layer_zip" {
+  type       = "zip"
+  source_dir = "${local.function_source_base_path}/shared-user-dependencies/dist"
+
+  #   excludes = [
+  #     ".gitignore",
+  #     "${local.package_name}.zip",
+  #     "package.json",
+  #     "package-lock.json"
+  #   ]
+  output_file_mode = "0666"
+  output_path      = "${local.function_source_base_path}/shared-user-dependencies/layer.zip"
+
+  depends_on = [
+    data.external.layer_build
+  ]
+}
+
+resource "aws_lambda_layer_version" "users_dependencies_layer" {
+  layer_name          = "users-dependencies-layer"
+  description         = "Dependencies for user-related lambdas"
+  compatible_runtimes = ["nodejs20.x"]
+  filename            = data.archive_file.layer_zip.output_path
+  source_code_hash    = data.archive_file.layer_zip.output_base64sha256
+}
+
 // TODO: Declare microservice modules here!
 module "emli_lms_createuser" {
   source = "./microservice"
@@ -64,6 +101,7 @@ module "emli_lms_listusers" {
 
   lambda_name              = "user-service-list-users"
   function_source_location = "${local.function_source_base_path}/list-users"
+  layer_arn                = [aws_lambda_layer_version.users_dependencies_layer.arn]
   execution_role           = local.allow_write_log_group_stream_event_role_arn
   api_id                   = aws_api_gateway_rest_api.microservice_api.id
   api_execution_arn        = aws_api_gateway_rest_api.microservice_api.execution_arn
@@ -81,6 +119,7 @@ module "emli_lms_fetchuser" {
 
   lambda_name              = "user-service-fetch-user"
   function_source_location = "${local.function_source_base_path}/fetch-user"
+  layer_arn                = [aws_lambda_layer_version.users_dependencies_layer.arn]
   execution_role           = local.allow_write_log_group_stream_event_role_arn
   api_id                   = aws_api_gateway_rest_api.microservice_api.id
   api_execution_arn        = aws_api_gateway_rest_api.microservice_api.execution_arn

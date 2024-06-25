@@ -2,7 +2,8 @@
   "name": "create-user",
   "version": "1.0.0",
   "description": "",
-  "main": "src/index.js",
+  "type": "commonjs",
+  "main": "index.js",
   "scripts": {
     "test": "cross-env NODE_PATH=../shared-user-dependencies/dist/nodejs/node_modules jest --passWithNoTests",
     "build": "rm -rf dist && cross-env NODE_PATH=../shared-user-dependencies/dist/nodejs/node_modules npx esbuild index.js --bundle --minify --external:data-interface --platform=node --target=node20.12 --outdir=dist"

@@ -1,0 +1,10 @@
+
+{
+    "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "data-interface": [ "../shared-user-dependencies/data-interface.js" ],
+            "business-logic": [ "../shared-user-dependencies/business-logic.js" ]
+        }
+    }
+}

@@ -17,16 +17,25 @@ const usersRepo = {
     }]
 };
 
-async function listUsers(options = null) {
-    return Promise.resolve(usersRepo.users);
+const listUsers = async (options = null) => {
+    return Promise.resolve(usersRepo.users.slice());
 };
 
-async function fetchUser(id) {
+const fetchUser = async (id) => {
     return Promise.resolve(
         usersRepo.users.find(user => user.id == id));
 }
 
+const createUser = async (user) => {
+    user.id = uuid();
+
+    usersRepo.users.push(user);
+
+    return Promise.resolve(user);
+}
+
 module.exports = {
     listUsers: listUsers,
-    fetchUser: fetchUser
+    fetchUser: fetchUser,
+    createUser: createUser
 }

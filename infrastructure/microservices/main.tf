@@ -88,6 +88,7 @@ module "emli_lms_createuser" {
 
   lambda_name              = "user-service-create-user"
   function_source_location = "${local.function_source_base_path}/create-user"
+  layer_arn                = [aws_lambda_layer_version.users_dependencies_layer.arn]
   execution_role           = local.allow_write_log_group_stream_event_role_arn
   api_id                   = aws_api_gateway_rest_api.microservice_api.id
   api_execution_arn        = aws_api_gateway_rest_api.microservice_api.execution_arn
